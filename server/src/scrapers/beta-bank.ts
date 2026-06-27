@@ -1,9 +1,9 @@
 import type { Account, ScraperResult } from "./types.js";
+import {sleep} from "./utils.js"
+const BANK_NAME = "Beta Bank"
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+function shouldFail(){
+  return Math.random() < 0.3;
 }
 
 type BetaAccount = {
@@ -23,6 +23,10 @@ function toAccount(account: BetaAccount): Account {
 }
 
 function fetchAccounts(): Promise<BetaAccount[]> {
+  if (shouldFail()){
+    return Promise.reject(new Error("Beta Bank is temporarily unavailable"));
+  }
+
   return Promise.resolve([
     {
       accountId: "checking-001",
@@ -44,7 +48,7 @@ export async function scrapeBetaBank() {
   const rawAccounts = await fetchAccounts()
   const accounts = rawAccounts.map(toAccount);
   return {
-    bank: "Beta Bank",
+    bank: BANK_NAME,
     accounts,
   };
 }

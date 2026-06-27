@@ -1,10 +1,7 @@
 import type { Account, ScraperResult } from "./types.js";
+import { sleep } from "./utils.js";
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
+const BANK_NAME = "Alpha Bank";
 
 type AlphaAccount = {
   accountId: string;
@@ -44,7 +41,7 @@ export async function scrapeAlphaBank() {
   const rawAccounts = await fetchAccounts();
   const accounts = rawAccounts.map(toAccount);
   return {
-    bank: "Alpha Bank",
+    bank: BANK_NAME,
     accounts,
   };
 }
