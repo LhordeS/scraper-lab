@@ -3,8 +3,8 @@ import { scrapeBetaBank } from "./beta-bank.js";
 import type { Scraper } from "./types.js";
 
 export const scrapers = {
-  alphaBank: scrapeAlphaBank,
-  betaBank: scrapeBetaBank,
+  alpha: scrapeAlphaBank,
+  beta: scrapeBetaBank,
 };
 
 export type ScraperName = keyof typeof scrapers;
