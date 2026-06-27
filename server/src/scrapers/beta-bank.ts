@@ -6,26 +6,43 @@ function sleep(ms: number): Promise<void> {
   });
 }
 
-function fetchAccounts(): Promise<Account[]> {
+type BetaAccount = {
+  accountId: string;
+  label: string;
+  currentAmount: number;
+  isoCurrency: string;
+}
+
+function toAccount(account: BetaAccount): Account {
+  return {
+    id: account.accountId,
+    name: account.label,
+    balance: account.currentAmount,
+    currency: account.isoCurrency
+  }
+}
+
+function fetchAccounts(): Promise<BetaAccount[]> {
   return Promise.resolve([
     {
-      id: "checking-001",
-      name: "Everyday Checking",
-      balance: 1240.5,
-      currency: "USD",
+      accountId: "checking-001",
+      label: "Main Checking",
+      currentAmount: 1240.5,
+      isoCurrency: "USD",
     },
     {
-      id: "savings-001",
-      name: "Emergency Savings",
-      balance: 8200,
-      currency: "USD",
+      accountId: "savings-002",
+      label: "High Interest Savings",
+      currentAmount: 8200,
+      isoCurrency: "USD",
     },
   ]);
 }
 
 export async function scrapeBetaBank() {
   await sleep(500);
-  const accounts = await fetchAccounts();
+  const rawAccounts = await fetchAccounts()
+  const accounts = rawAccounts.map(toAccount);
   return {
     bank: "Beta Bank",
     accounts,
